@@ -1,6 +1,66 @@
 from flask import Flask
 from flask import url_for
+import sqlite3 
 app = Flask(__name__)
+def dict_factory(cursor, row):
+   """Arma un diccionario con los valores de la fila."""
+   fields = [column[0] for column in cursor.description]
+   return {key: value for key, value in zip(fields, row)}
+
+db= None 
+def abrirconexion():
+  global db
+  db= sqlite3.connect("instance/datos.sqlite")
+  db.row_factory = dict_factory
+
+
+def cerrarconexion():
+  global db
+  db.close()
+  db=None
+
+@app.route('/test.bd')
+def testDB():
+    abrirconexion()
+    cursor =db.cursor()
+    cursor.execute("SELECT COUNT(*) AS cant FROM usuarios ;")
+    res=cursor.fetchone()
+    registros =res["cant"]
+    cerrarconexion()
+    return f"hay{registros} registros en la tabla usuario"
+
+@app.route('/crear_usuario')
+def testcrear ():
+    nombre=leandro
+    email= leandro@etec.uba.ar
+    abrirconexion()
+    cursor =db.cursor()
+    consulta = "INSERT INTO usuarios(usuaario, email)"
+    cursor.execute(consuta,(nombre,email))
+    db.commit
+    cerrarconexion()
+    return f"registro agregado ({nombre})"
+
+
+@app.route('/crear_usuario_argumento/<string:usuario>/<string:email>')
+def argumento(usuario, email ):
+    abrirconexion()
+    cursor =db.cursor()
+    consulta = "INSERT INTO usuarios(usuario, email) VALUES (?,?)"
+    cursor.execute(consulta,(usuario,email))
+    db.commit()
+    cerrarconexion()
+    return f"registro agregado ({usuario })"
+
+@app.route('/eliminar')
+def argumento(usuario, email ):
+    abrirconexion()
+    cursor =db.cursor()
+    consulta = "INSERT INTO usuario(usuario, email) VALUES (?,?);"
+    cursor.execute(consulta,(usuario,email))
+    db.commit()
+    cerrarconexion()
+    return f"registro agregado ({usuario })"
 
 @app.route('/')
 def main():
