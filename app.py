@@ -1,6 +1,7 @@
-from flask import Flask
-from flask import url_for
+
+from flask import Flask, url_for, render_template
 import sqlite3 
+
 app = Flask(__name__)
 def dict_factory(cursor, row):
    """Arma un diccionario con los valores de la fila."""
@@ -43,7 +44,7 @@ def testcrear ():
 
 
 @app.route('/crear_usuario_argumento/<string:usuario>/<string:email>')
-def argumento(usuario, email ):
+def vnuis(usuario, email ):
     abrirconexion()
     cursor =db.cursor()
     consulta = "INSERT INTO usuarios(usuario, email) VALUES (?,?)"
@@ -101,6 +102,21 @@ def suma(n1,n2):
 @app.route('/nombre/nombre/<string:nombre>')
 def nombre():
     return f'<p>hola {nombre}<p>'
-
     
-    
+@app.route("/mostrar-datos-plantilla/<int:id>")
+def fgsh(id):
+    abrirconexion()
+    cursor = db.cursor()
+    res= cursor.execute("SELECT id, usuario, email, direccion, telefono FROM usuarios WHERE id= ?",(id,))
+    res= cursor.fetchone()
+    cerrarconexion()
+    usuario=None 
+    email= None 
+    direccion = None 
+    telefono=None 
+    if res!= None:
+        usuario= res['usuario']
+        email = res ['email']
+        direccion = res['direccion']
+        telefono=res['telefono']
+    return render_template("datos.html", id=id, usuario=usuario, email=email, direccion= direccion, telefono=telefono )
