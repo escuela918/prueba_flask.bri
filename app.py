@@ -118,5 +118,22 @@ def fgsh(id):
         usuario= res['usuario']
         email = res ['email']
         direccion = res['direccion']
-        telefono=res['telefono']
+        telefono = res['telefono']
     return render_template("datos.html", id=id, usuario=usuario, email=email, direccion= direccion, telefono=telefono )
+
+ """  @app.route("/tirar-dado")
+    def dado_img():
+        from random import randint 
+        numeros = ["uno", "dos", "tres","cuatro", "cinco","seis"]
+        n= randint (1,6)
+        dados = []
+        for i in range """
+
+    @app.route("/jaja")
+    def usuario():
+        abrirconexion()
+        cursor = db.cursor()
+        res= cursor.execute("SELECT ususario,id FROM usuario")
+        res= cursor.fetchone()
+        cerrarconexion()
+        return render_template("jeje.html",usuario=res) 

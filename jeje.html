@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="widht = device-widh, initial-scale =1.0">
+        <title>documentos</title>
+    </head>
+    <body>
+        <ul>
+            {% for u in usuario %}
+            <li><a href="{{url_for('datos', id=u['id]}"></a></li>
+        </ul>
+    </body>
+</html>
